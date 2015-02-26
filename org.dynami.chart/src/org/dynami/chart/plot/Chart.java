@@ -68,12 +68,11 @@ public class Chart extends Plottable {
 		if(Type.Line.equals(type)){
 			s = new LineSeries(name, type);
 		} else if(Type.Bar.equals(type)){
-			s = new BarSeries(name, type);
+			s = new BarSeries(name, type, true);
 		} else if(Type.Ohlc.equals(type)){
 			s = new OHLCSeries(name, type);
-		} else {
-			assert s == null :"Not implemented type of series";
 		}
+		assert s == null :"Not implemented type of series";
 		series.put(name, s);
 		return s;
 	}
