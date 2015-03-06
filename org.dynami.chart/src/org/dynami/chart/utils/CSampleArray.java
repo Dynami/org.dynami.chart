@@ -77,69 +77,40 @@ public class CSampleArray {
 		return Math.min(length, cursor);
 	}
 	
-	public double min(){
-		double min = Double.MAX_VALUE;
-		Sample s;
-		for(int i = 0; i < Math.min(size(), length); i++){
-			s = get(i);
-			for(int j = 0; j < s.getDim(); j++){
-				if(!Double.isNaN(s.y(j))){
-					min = Math.min(min, s.y(j));
-				}
-			}
-		}
-		return min;
-	}
-	
-	public double min(int period){
-		assert period > 0: "Period ["+period+"] has to be greater than zero";
-		double min = Double.MAX_VALUE;
-		Sample d = null;
-		int size = Math.min(size(), period);
-		for(int i = size-1; i >= 0; i--){
-			d = last(i);
-			if(d!= null && !Double.isNaN(d.y()) ){
-				for(int j = 0; j < d.getDim(); j++){
-					if(d.y(j) < min){
-						min = d.y(j);
-					}
-				}
-			}
-		}
-		return min;
-	}
-	
 	public double max(){
 		double max = -Double.MAX_VALUE;
+		double v;
 		Sample s;
-		for(int i = 0; i < Math.min(size(), length); i++){
+		int size = size();
+		for(int i = 0; i < size; i++){
 			s = get(i);
 			for(int j = 0; j < s.getDim(); j++){
-				if(!Double.isNaN(s.y(j))){
-					max = Math.max(max, s.y(j));
+				v = s.y(j);
+				if(!Double.isNaN(v)){
+					max = Math.max(max, v);
 				}
 			}
 		}
 		return max;
 	}
 	
-	public double max(int period){
-		assert period > 0: "Period ["+period+"] has to be greater than zero";
-		double max = -Double.MAX_VALUE;
-		Sample d = null;
-		int size = Math.min(size(), period);
-		for(int i = size-1; i >= 0; i--){
-			d = last(i);
-			if(d != null && !Double.isNaN(d.y())){
-				for(int j = 0; j < d.getDim();j++){
-					if(d.y(j) > max){
-						max = d.y(j);
-					}
+	public double min(){
+		double min = Double.MAX_VALUE;
+		double v;
+		Sample s;
+		int size = size();
+		for(int i = 0; i < size ; i++){
+			s = get(i);
+			for(int j = 0; j < s.getDim(); j++){
+				v = s.y(j);
+				if(!Double.isNaN(v)){
+					min = Math.min(min, v);
 				}
 			}
 		}
-		return max;
+		return min;
 	}
+	
 	
 	public Sample getByX(long x){
 		if(x < start() || x > end()) 

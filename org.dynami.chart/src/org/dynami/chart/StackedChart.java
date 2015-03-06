@@ -21,7 +21,7 @@ import org.eclipse.swt.widgets.Display;
 
 public class StackedChart extends Composite {
 	public static final double RANGE_PADDING_COEF = 0.1;
-	public static final int SAMPLE_SIZE = 50;
+	public static final int SAMPLE_SIZE = 100;
 	public static final int PIXELS_PER_UNIT = 8;
 	public static final int TICK_UNIT_FACTOR = 4;
 	public static final int TICK_PIXEL_SIZE = 4;

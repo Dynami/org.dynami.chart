@@ -45,6 +45,6 @@ public interface ISeries extends IPlottable {
 	public Last getLast();
 	
 	public static enum Type {
-		Line , Bar , Ohlc
+		Line , Bar , Ohlc, Order
 	}
 }

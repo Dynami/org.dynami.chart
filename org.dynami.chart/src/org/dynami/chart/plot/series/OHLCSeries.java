@@ -64,11 +64,8 @@ public class OHLCSeries extends Series {
 							-(int)(((cY-oY)/(range.upper-range.lower))*bounds.height));
 					
 				} else {
-					//System.out.println("Iteration "+count);
-//					System.out.println("xValues "+Arrays.toString(xes) );
-//					System.out.println("Values "+Arrays.toString( values.toArray()) );
-//					System.out.println("Null value for "+xes[i]);
-//					System.out.println("-----------------------");
+					System.out.println("Null value for "+xes[i]);
+					System.out.println("-----------------------");
 				}
 			}
 		}

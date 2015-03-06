@@ -29,7 +29,7 @@ public class TestStackedChart2 {
 	 */
 	public static void main(String[] args) {
 		try {
-			Path path = FileSystems.getDefault().getPath(".\\src_test\\", "MIB_H.txt");
+			Path path = FileSystems.getDefault().getPath(".\\src_test\\", "FTSEMIB_1M.txt");
 			final List<String> data = Files.readAllLines(path);
 			
 			TestStackedChart2 window = new TestStackedChart2();

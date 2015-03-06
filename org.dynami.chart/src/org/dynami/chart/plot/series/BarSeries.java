@@ -23,6 +23,10 @@ public class BarSeries extends Series {
 				range.lower = 0;
 			}
 			
+			if(zeroAligned && range.upper < 0){
+				range.upper = 0;
+			}
+			
 			int plottable_units = bounds.width/StackedChart.PIXELS_PER_UNIT;
 			long[] xes = xValues.toArray();
 			int size = xes.length;

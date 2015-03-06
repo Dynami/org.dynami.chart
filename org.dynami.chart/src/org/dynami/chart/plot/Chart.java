@@ -6,13 +6,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.dynami.chart.ISeries;
+import org.dynami.chart.ISeries.Type;
 import org.dynami.chart.Plottable;
 import org.dynami.chart.Range;
-import org.dynami.chart.StackedChart;
-import org.dynami.chart.ISeries.Type;
 import org.dynami.chart.plot.series.BarSeries;
 import org.dynami.chart.plot.series.LineSeries;
 import org.dynami.chart.plot.series.OHLCSeries;
+import org.dynami.chart.plot.series.OrderSeries;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.widgets.Display;
@@ -71,7 +71,9 @@ public class Chart extends Plottable {
 			s = new BarSeries(name, type, true);
 		} else if(Type.Ohlc.equals(type)){
 			s = new OHLCSeries(name, type);
-		}
+		} else if(Type.Order.equals(type)){
+			s = new OrderSeries(name, type);
+		} 
 		assert s == null :"Not implemented type of series";
 		series.put(name, s);
 		return s;
@@ -84,9 +86,10 @@ public class Chart extends Plottable {
 			max = Math.max(s.max(), max);
 			min = Math.min(s.min(), min);
 		}
-		double pad = Math.abs(max-min)*StackedChart.RANGE_PADDING_COEF;
+		double pad = 20; //Math.abs(max-min)*StackedChart.RANGE_PADDING_COEF;
 		max += pad;
 		min -= pad;
+		
 		setRange(new Range(min, max));
 	}
 	
@@ -95,7 +98,7 @@ public class Chart extends Plottable {
 		for(ISeries s : series.values()){
 			max = Math.max(s.max(), max);
 		}
-		double pad = Math.abs(max-min)*StackedChart.RANGE_PADDING_COEF;
+		double pad = 20; //Math.abs(max-min)*StackedChart.RANGE_PADDING_COEF;
 		max += pad;
 		setRange(new Range(min, max));
 	}
@@ -105,7 +108,7 @@ public class Chart extends Plottable {
 		for(ISeries s : series.values()){
 			min = Math.min(s.min(), min);
 		}
-		double pad = Math.abs(max-min)*StackedChart.RANGE_PADDING_COEF;
+		double pad = 20; //Math.abs(max-min)*StackedChart.RANGE_PADDING_COEF;
 		min -= pad;
 		setRange(new Range(min, max));
 	}

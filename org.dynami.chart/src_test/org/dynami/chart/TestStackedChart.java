@@ -19,7 +19,7 @@ public class TestStackedChart {
 
 	protected Shell shell;
 	protected StackedChart chartWidget;
-	protected ISeries s1, s2, s3, s4;
+	protected ISeries s1, s2, s3, s4, s5;
 	protected double count = .1;
 	/**
 	 * Launch the application.
@@ -46,8 +46,11 @@ public class TestStackedChart {
 						double val4 = Math.sin(window.count+=.05)*90;
 						window.s4.add(new Sample(count, val4));
 						
+						window.s5.add(new Sample(count, val4));
+						
 						window.chartWidget.getMainChart().adjustRange();
 						window.chartWidget.getChart("CCO").adjustRange();
+						window.chartWidget.getChart("CCI").adjustRange();
 						window.chartWidget.redraw();
 					});
 				}
@@ -99,5 +102,7 @@ public class TestStackedChart {
 		s3.setForeground(Display.getDefault().getSystemColor(SWT.COLOR_GRAY));
 		
 		s4 = chartWidget.addNewChart("CCO", 50).attachSeries("cco", Type.Bar);
+		
+		s5 = chartWidget.addNewChart("CCI", 50).attachSeries("ccI", Type.Line);
 	}
 }
