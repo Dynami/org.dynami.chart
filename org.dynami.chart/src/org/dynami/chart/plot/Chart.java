@@ -1,14 +1,17 @@
 package org.dynami.chart.plot;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.dynami.chart.ISeries;
 import org.dynami.chart.ISeries.Type;
 import org.dynami.chart.Plottable;
 import org.dynami.chart.Range;
+import org.dynami.chart.StackedChart;
 import org.dynami.chart.plot.series.BarSeries;
 import org.dynami.chart.plot.series.LineSeries;
 import org.dynami.chart.plot.series.OHLCSeries;
@@ -20,7 +23,8 @@ import org.eclipse.swt.widgets.Display;
 public class Chart extends Plottable {
 	private final String name;
 	private double weight = 100;
-	private final Map<String, Series> series = new HashMap<>();
+	private final Map<String, Series> seriesMap = new HashMap<>();
+	private final List<Series> seriesList = new ArrayList<>(); 
 	private final Grid grid = new Grid();
 	
 	public Chart(String name, double weight) {
@@ -52,7 +56,7 @@ public class Chart extends Plottable {
 		grid.paintControl(e);
 		int xLabel = bounds.x+5; 
 		int yLabel = bounds.y;
-		for(Series s : series.values()){
+		for(Series s : seriesList){
 			applyDimensionsTo(s);
 			s.paintControl(e);
 			
@@ -75,18 +79,23 @@ public class Chart extends Plottable {
 			s = new OrderSeries(name, type);
 		} 
 		assert s == null :"Not implemented type of series";
-		series.put(name, s);
+		seriesMap.put(name, s);
+		seriesList.add(s);
+		seriesList.sort((Series s1, Series o2)->{
+			return (s1 instanceof LineSeries)?1:0;
+		});
 		return s;
 	}
 	
 	public void adjustRange(){
 		double max = -Double.MAX_VALUE;
 		double min = Double.MAX_VALUE;
-		for(ISeries s : series.values()){
+		for(ISeries s : seriesList){
 			max = Math.max(s.max(), max);
 			min = Math.min(s.min(), min);
 		}
-		double pad = 20; //Math.abs(max-min)*StackedChart.RANGE_PADDING_COEF;
+		
+		double pad = Math.abs(max-min)*StackedChart.RANGE_PADDING_COEF;
 		max += pad;
 		min -= pad;
 		
@@ -95,20 +104,20 @@ public class Chart extends Plottable {
 	
 	public void adjustMinRange(final double min){
 		double max = -Double.MAX_VALUE;
-		for(ISeries s : series.values()){
+		for(ISeries s :seriesList){
 			max = Math.max(s.max(), max);
 		}
-		double pad = 20; //Math.abs(max-min)*StackedChart.RANGE_PADDING_COEF;
+		double pad = Math.abs(max-min)*StackedChart.RANGE_PADDING_COEF;
 		max += pad;
 		setRange(new Range(min, max));
 	}
 	
 	public void adjustMaxRange(final double max){
 		double min = Double.MAX_VALUE;
-		for(ISeries s : series.values()){
+		for(ISeries s : seriesList){
 			min = Math.min(s.min(), min);
 		}
-		double pad = 20; //Math.abs(max-min)*StackedChart.RANGE_PADDING_COEF;
+		double pad = Math.abs(max-min)*StackedChart.RANGE_PADDING_COEF;
 		min -= pad;
 		setRange(new Range(min, max));
 	}
@@ -118,10 +127,10 @@ public class Chart extends Plottable {
 	}
 	
 	public ISeries getSeries(String name){
-		return series.get(name);
+		return seriesMap.get(name);
 	}
 	
 	public Collection<ISeries> getSeries(){
-		return Collections.unmodifiableCollection(series.values());
+		return Collections.unmodifiableCollection(seriesList);
 	}
 }

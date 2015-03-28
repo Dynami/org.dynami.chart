@@ -10,6 +10,7 @@ import java.util.TimerTask;
 
 import org.dynami.chart.ISeries.Type;
 import org.dynami.chart.plot.series.OHLCSeries;
+import org.dynami.core.utils.CArray;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ShellAdapter;
 import org.eclipse.swt.events.ShellEvent;
@@ -21,8 +22,10 @@ public class TestStackedChart2 {
 
 	protected Shell shell;
 	protected StackedChart chart;
-	protected ISeries s1;
+	protected ISeries s1 , s2, reg;
 	protected int count = 1;
+	
+	protected CArray prices = new CArray(10);
 	/**
 	 * Launch the application.
 	 * @param args
@@ -42,15 +45,21 @@ public class TestStackedChart2 {
 						Bar b = parse(data.get(window.count++));
 //						System.out.println(b.toString());
 						Display.getDefault().asyncExec(()->{
-							window.s1.add(new Sample(++count, b.open, b.high, b.low, b.close).setMain(OHLCSeries.CLOSE));
+							Sample s = new Sample(++count, b.open, b.high, b.low, b.close).setMain(OHLCSeries.CLOSE);
+							window.prices.add(b.close);
+							window.s1.add(s);
+							window.s2.add(new Sample(count, window.prices.mean()));
+							window.reg.add(new Sample(count, window.prices.slope()));
+							
 							window.chart.getMainChart().adjustRange();
+							window.chart.getChart("Indexes").adjustRange();
 							window.chart.redraw();
 						});
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
 				}
-			}, 3000, 1000);
+			}, 3000, 500);
 			
 			window.open();
 			
@@ -74,7 +83,7 @@ public class TestStackedChart2 {
 		public final long time;
 		public final double open, high, low, close;
 		
-		public Bar(long time, double high, double low, double open, double close) {
+		public Bar(long time, double open, double high, double low, double close) {
 			this.time= time;
 			this.open = open;
 			this.high = high;
@@ -121,5 +130,7 @@ public class TestStackedChart2 {
 		
 		chart = new StackedChart(shell, SWT.NONE, "Stock");
 		s1 = chart.getMainChart().attachSeries("price", Type.Ohlc);
+		s2 = chart.getMainChart().attachSeries("mavg", Type.Line);
+		reg = chart.addNewChart("Indexes", 40).attachSeries("RSI", Type.Line);
 	}
 }

@@ -31,12 +31,15 @@ public class Axis extends Plottable {
 						bounds.y+StackedChart.PIXELS_PER_UNIT*i);
 			}
 		} else {
+			
 			for(int i = 0; i < bounds.width/StackedChart.PIXELS_PER_UNIT; i++){
 				e.gc.drawLine(
 						bounds.x+StackedChart.PIXELS_PER_UNIT*i, 
 						bounds.y, 
 						bounds.x+StackedChart.PIXELS_PER_UNIT*i, 
 						bounds.y+StackedChart.TICK_PIXEL_SIZE/2);
+				
+//				e.gc.drawText(string, x, y);
 			}
 		}
 	}

@@ -55,13 +55,13 @@ public class OHLCSeries extends Series {
 							x-(StackedChart.PIXELS_PER_UNIT-StackedChart.SPACE)/2, 
 							cY, 
 							(StackedChart.PIXELS_PER_UNIT-StackedChart.SPACE), 
-							-(int)(((cY-oY)/(range.upper-range.lower))*bounds.height));
+							-(int)(cY-oY));
 					
 					e.gc.drawRectangle(
 							x-(StackedChart.PIXELS_PER_UNIT-StackedChart.SPACE)/2, 
 							cY, 
 							(StackedChart.PIXELS_PER_UNIT-StackedChart.SPACE), 
-							-(int)(((cY-oY)/(range.upper-range.lower))*bounds.height));
+							-(int)(cY-oY));
 					
 				} else {
 					System.out.println("Null value for "+xes[i]);
