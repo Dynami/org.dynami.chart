@@ -10,6 +10,7 @@ public class Title extends Plottable {
 	
 	public Title(String title){
 		this.title = title;
+		setVisible(title != null);
 	}
 
 	@Override
@@ -31,5 +32,6 @@ public class Title extends Plottable {
 	
 	public void setTitle(String title) {
 		this.title = title;
+		setVisible(title != null);
 	}
 }

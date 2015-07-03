@@ -30,6 +30,12 @@ public abstract class Series extends Plottable implements ISeries {
 	}
 	
 	@Override
+	public void clear() {
+		values.clear();
+		last.setYValue(0);
+	}
+	
+	@Override
 	public void paintControl(PaintEvent e) {
 		if(isVisible()){
 			applyStyle(e.gc);

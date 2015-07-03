@@ -108,7 +108,6 @@ public abstract class Plottable implements IPlottable {
 	
 	public int getYAxis(final double value){
 		if(Double.isNaN(value)){
-			System.out.println("Plottable.getYAxis(NaN)");
 			return (int)(bounds.y+bounds.height);
 		}
 		return (int)(bounds.y+bounds.height-(((value-range.lower)/(range.upper-range.lower))*bounds.height));

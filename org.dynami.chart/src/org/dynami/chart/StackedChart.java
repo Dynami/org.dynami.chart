@@ -11,6 +11,7 @@ import org.dynami.chart.plot.Chart;
 import org.dynami.chart.plot.Title;
 import org.dynami.chart.utils.CLongSet;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
@@ -28,11 +29,26 @@ public class StackedChart extends Composite {
 	public static final int SPACE = 2;
 	
 	private final String MAIN;
+	private final Title title = new Title(null);
 	private final List<Chart> charts = new ArrayList<>();
-	private final Axis xAxis = new Axis("x axis", false);
 	private final CLongSet xValues = new CLongSet(SAMPLE_SIZE);
 	
-	private final Title title = new Title("Chart");
+	private final Axis xAxis = new Axis("x axis", false){
+		public void paintControl(PaintEvent e) {
+			final int SIZE = xValues.size();
+			final int LABEL_SIZE = e.gc.stringExtent(String.valueOf(xValues.last())).x;
+			for(int i = 0, j = 0; i < SIZE; i++){
+				if(i == 0 || (LABEL_SIZE+SPACE)*j < i*StackedChart.PIXELS_PER_UNIT){
+					j++;
+					e.gc.drawString(
+							String.valueOf(xValues.get(i)), 
+							PAD.LEFT.size+i*StackedChart.PIXELS_PER_UNIT, 
+							bounds.y,
+							true);
+				}
+			}
+		};
+	};
 	
 	public StackedChart(Composite parent, int style, String mainChart) {
 		super(parent, style | SWT.DOUBLE_BUFFERED);
@@ -46,8 +62,8 @@ public class StackedChart extends Composite {
 			
 			double sum = charts.stream().mapToDouble(Chart::getWeight).sum();
         	int plotsNumber = charts.size();
-        	int x = PAD.RIGHT.size;
-        	int y = PAD.UPPER.size;
+        	int x = PAD.LEFT.size;
+        	int y = PAD.MIN.size*2+(title.isVisible()?title.getFont().getFontData()[0].getHeight():0);
         	int width = e.width-PAD.LEFT.size-PAD.RIGHT.size;
         	int height = 0;
         	
@@ -60,10 +76,10 @@ public class StackedChart extends Composite {
         	title.setBackground(getBackground());
         	title.setForeground(getForeground());
         	title.setFont(getFont());
-        	title.setBounds(new Rectangle(0, PAD.UPPER.size, e.width, e.height));
+        	title.setBounds(new Rectangle(0, y, e.width, e.height));
         	title.paintControl(e);
         	
-        	int available_height = e.height-PAD.UPPER.size-PAD.LOWER.size-(PAD.INFRA_PLOT.size*plotsNumber-1);
+        	int available_height = e.height-y-PAD.LOWER.size-(PAD.INFRA_PLOT.size*plotsNumber-1);
         	for(Chart c : charts){
         		y += height+PAD.INFRA_PLOT.size;
             	height = (int)((c.getWeight()/sum)*available_height);
@@ -74,9 +90,18 @@ public class StackedChart extends Composite {
         		drawVerticalTitle(e.gc, c.getBounds(), c.getName());
         	}
         	y+=height;
+        	
         	xAxis.setBounds(new Rectangle(x, y, width, height));
+        	xAxis.setXValues(xValues);
+        	e.gc.setBackground(getBackground());
+        	e.gc.setForeground(getForeground());
+        	e.gc.setFont(getFont());
         	xAxis.paintControl(e);
 		});
+	}
+	
+	public Title getTitle(){
+		return title;
 	}
 	
 	public Chart getMainChart(){
@@ -115,11 +140,12 @@ public class StackedChart extends Composite {
 	}
 
 	public static enum PAD {
+		MIN(2),
 		INFRA_PLOT(5),
-		UPPER(15),
-		LOWER(15),
-		LEFT(45),
-		RIGHT(20);
+		//UPPER(15),
+		LOWER(20),
+		LEFT(20),
+		RIGHT(45);
 		
 		final int size;
 		private PAD(int size){
@@ -134,7 +160,7 @@ public class StackedChart extends Composite {
 	private void drawVerticalTitle(GC gc, Rectangle bounds, String title) {
 		try {
 	        int textWidth = bounds.height;
-	        int textHeight = StackedChart.PAD.RIGHT.val();
+	        int textHeight = StackedChart.PAD.LEFT.val();
 	        
 	        // widen for italic font
 	        int margin = textHeight / 10;
@@ -163,7 +189,7 @@ public class StackedChart extends Composite {
 	        gc.setTransform(transform);
 	
 	        // draw the image on the rotated graphics context
-	        int x = bounds.x-StackedChart.PAD.RIGHT.val();
+	        int x = bounds.x-StackedChart.PAD.LEFT.val();
 	        int y = bounds.y;
 	
 	        gc.drawImage(image, -y, x);

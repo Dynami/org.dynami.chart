@@ -64,6 +64,7 @@ public class Chart extends Plottable {
 			e.gc.setForeground(s.getForeground());
 			e.gc.drawString(s.getName(), xLabel, yLabel, true);
 			xLabel += e.gc.stringExtent(s.getName()).x+5;
+			
 		}
 	}
 	

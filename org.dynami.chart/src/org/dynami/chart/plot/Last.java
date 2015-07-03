@@ -18,8 +18,8 @@ public class Last extends Plottable {
 		lastLable = new int[]{
 				0,DIM, 
 				DIM,0, 
-				StackedChart.PAD.LEFT.val(),0,
-				StackedChart.PAD.LEFT.val(),2*DIM, 
+				StackedChart.PAD.RIGHT.val(),0,
+				StackedChart.PAD.RIGHT.val(),2*DIM, 
 				DIM,2*DIM
 			};
 	}
