@@ -12,6 +12,7 @@ import org.dynami.chart.plot.Title;
 import org.dynami.chart.utils.CLongSet;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
@@ -27,6 +28,7 @@ public class StackedChart extends Composite {
 	public static final int TICK_UNIT_FACTOR = 4;
 	public static final int TICK_PIXEL_SIZE = 4;
 	public static final int SPACE = 2;
+	private boolean forceFontToSubPlottable = false;
 	
 	private final String MAIN;
 	private final Title title = new Title(null);
@@ -36,15 +38,25 @@ public class StackedChart extends Composite {
 	private final Axis xAxis = new Axis("x axis", false){
 		public void paintControl(PaintEvent e) {
 			final int SIZE = xValues.size();
+			final int PLOTTABLE_UNITS = bounds.width/StackedChart.PIXELS_PER_UNIT;
 			final int LABEL_SIZE = e.gc.stringExtent(String.valueOf(xValues.last())).x;
-			for(int i = 0, j = 0; i < SIZE; i++){
-				if(i == 0 || (LABEL_SIZE+SPACE)*j < i*StackedChart.PIXELS_PER_UNIT){
-					j++;
+			for(int i = SIZE-1; i >= 0; i--){
+				final float factor = ((LABEL_SIZE+SPACE)/PIXELS_PER_UNIT)+1;
+				
+				final int x = (PLOTTABLE_UNITS >= SIZE)?
+						PAD.LEFT.size+i*StackedChart.PIXELS_PER_UNIT:
+						PAD.LEFT.size+(i-SIZE+PLOTTABLE_UNITS)*StackedChart.PIXELS_PER_UNIT;
+				
+				if(i%factor == 0){
 					e.gc.drawString(
-							String.valueOf(xValues.get(i)), 
-							PAD.LEFT.size+i*StackedChart.PIXELS_PER_UNIT, 
+							String.valueOf(xValues.get(i)),
+							x, 
 							bounds.y,
 							true);
+				}
+				
+				if(x < PAD.LEFT.size){
+					break;
 				}
 			}
 		};
@@ -63,7 +75,7 @@ public class StackedChart extends Composite {
 			double sum = charts.stream().mapToDouble(Chart::getWeight).sum();
         	int plotsNumber = charts.size();
         	int x = PAD.LEFT.size;
-        	int y = PAD.MIN.size*2+(title.isVisible()?title.getFont().getFontData()[0].getHeight():0);
+        	int y = SPACE*2+(title.isVisible()?title.getFont().getFontData()[0].getHeight():0);
         	int width = e.width-PAD.LEFT.size-PAD.RIGHT.size;
         	int height = 0;
         	
@@ -85,6 +97,9 @@ public class StackedChart extends Composite {
             	height = (int)((c.getWeight()/sum)*available_height);
         		c.setBounds(new Rectangle(x, y, width, height));
         		c.setXValues(xValues);
+        		if(forceFontToSubPlottable){ 
+        			c.setFont(getFont());
+        		}
         		c.paintControl(e);
         		
         		drawVerticalTitle(e.gc, c.getBounds(), c.getName());
@@ -117,6 +132,11 @@ public class StackedChart extends Composite {
 		}
 	}
 	
+	public void setFont(Font font, boolean forceFontToSubPlottable) {
+		super.setFont(font);
+		this.forceFontToSubPlottable = forceFontToSubPlottable;
+	}
+	
 	public Collection<Chart> getCharts(){
 		return Collections.unmodifiableCollection(charts);
 	}
@@ -140,12 +160,11 @@ public class StackedChart extends Composite {
 	}
 
 	public static enum PAD {
-		MIN(2),
 		INFRA_PLOT(5),
 		//UPPER(15),
 		LOWER(20),
 		LEFT(20),
-		RIGHT(45);
+		RIGHT(50);
 		
 		final int size;
 		private PAD(int size){

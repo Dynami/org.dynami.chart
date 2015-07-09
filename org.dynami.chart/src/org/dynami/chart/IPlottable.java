@@ -9,6 +9,9 @@ import org.eclipse.swt.graphics.Rectangle;
 
 public interface IPlottable extends PaintListener {
 	
+//	public void forceFontToSubPlottable(boolean force);
+//	public boolean isFontForced();
+	
 	public boolean isVisible();
 	public void setVisible(boolean visible);
 	

@@ -60,7 +60,7 @@ public class OrderSeries extends Series {
             int[] triangleArray = { x, y - symbolSize, x + symbolSize,
                     y + symbolSize, x - symbolSize, y + symbolSize };
             gc.fillPolygon(triangleArray);
-        } else if(Side.Long.equals(side)){
+        } else if(Side.Short.equals(side)){
             int[] invertedTriangleArray = { x, y + symbolSize, x + symbolSize,
                     y - symbolSize, x - symbolSize, y - symbolSize };
             gc.fillPolygon(invertedTriangleArray);

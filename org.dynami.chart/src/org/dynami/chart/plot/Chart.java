@@ -59,7 +59,7 @@ public class Chart extends Plottable {
 		for(Series s : seriesList){
 			applyDimensionsTo(s);
 			s.paintControl(e);
-			
+			s.setFont(getFont());
 			e.gc.setBackground(getBackground());
 			e.gc.setForeground(s.getForeground());
 			e.gc.drawString(s.getName(), xLabel, yLabel, true);

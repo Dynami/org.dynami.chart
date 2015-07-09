@@ -14,6 +14,8 @@ import org.dynami.core.utils.CArray;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ShellAdapter;
 import org.eclipse.swt.events.ShellEvent;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -129,8 +131,14 @@ public class TestStackedChart2 {
 		});
 		
 		chart = new StackedChart(shell, SWT.NONE, "Stock");
+		Font f = getFont("Courier", 7, SWT.NONE);
+		chart.setFont(f, true);
 		s1 = chart.getMainChart().attachSeries("price", Type.Ohlc);
 		s2 = chart.getMainChart().attachSeries("mavg", Type.Line);
 		reg = chart.addNewChart("Indexes", 40).attachSeries("RSI", Type.Line);
+	}
+	
+	public static Font getFont(final String name, final int size, final int style){
+		return new Font(Display.getCurrent(), new FontData(name, size, style));
 	}
 }
