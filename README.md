@@ -12,7 +12,7 @@ Chart styles can be mixed.
 ### What is this repository for? ###
 
 * **Quick summary**
-The project architecture takes inspiration from org.swtchart library, but is specialized to plot stacked charts with the same x axis.
+The project architecture takes inspiration from org.swtchart library, but is specialized on stacked charts with the same x axis.
 
 * **Version** 1.0
 
