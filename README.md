@@ -1,4 +1,4 @@
-# README #
+# org.dynami.chart #
 Welcome to org.dynami.chart, the project aims to deliver an open source charting library for Java/SWT.
 
 Currently supported chart style:
@@ -21,7 +21,8 @@ ISeries s1 = chart.getMainChart().attachSeries("price", Type.Ohlc);
 ISeries s2 = chart.getMainChart().attachSeries("mavg", Type.Line);
 ISeries reg = chart.addNewChart("Indexes", 40).attachSeries("RSI", Type.Line);
 ```
-Sample class is used to pass data to ISeries. Sample accepts one Y value and one or more Y values. In case of multiple Y values, you can set which is the most important to be displayed on the left of the chart, whether the first Y value is defaulted.
+Sample class is used to pass data to ISeries. Sample accepts one X value and one or more Y values. In case of multiple Y values, you can set which is the most important to be displayed on the left of the chart, whether the first Y value is defaulted.
+Sample data can be passed one by one to ISeries.
 
 ```
 #!java
