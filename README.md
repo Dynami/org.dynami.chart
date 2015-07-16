@@ -14,14 +14,14 @@ The project architecture takes inspiration from org.swtchart library but is spec
 
 
 ```
-#!java
 
+#!java
 StackedChart chart = new StackedChart(shell, SWT.NONE, "Stock");
 ISeries s1 = chart.getMainChart().attachSeries("price", Type.Ohlc);
 ISeries s2 = chart.getMainChart().attachSeries("mavg", Type.Line);
 ISeries reg = chart.addNewChart("Indexes", 40).attachSeries("RSI", Type.Line);
 ```
-Sample class is used to pass data to ISeries. Sample accepts one Y value and one or more Y values. In case of multiple Y values you can set which is the most important to be displayed on the left of the chart, whether the first Y value is defaulted.
+Sample class is used to pass data to ISeries. Sample accepts one Y value and one or more Y values. In case of multiple Y values, you can set which is the most important to be displayed on the left of the chart, whether the first Y value is defaulted.
 
 ```
 #!java
@@ -30,6 +30,7 @@ Sample s = new Sample(++count, b.open, b.high, b.low, b.close).setMain(OHLCSerie
 s1.add(s);
 ```
 
+![Immagine.png](https://bitbucket.org/repo/nXnGpG/images/3968628160-Immagine.png)
 
 ### How do I get set up? ###
 
