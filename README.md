@@ -2,9 +2,11 @@
 Welcome to org.dynami.chart, the project aims to deliver an open source charting library for Java/SWT.
 
 Currently supported chart style:
+
 * Line
 * Bar
 * OHLC (open, high, low, close)
+
 Chart styles can be stacked and mixed.
 
 * **Quick summary**
