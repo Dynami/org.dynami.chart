@@ -45,14 +45,3 @@ s1.add(s);
 * **Database configuration**: no database configuration is required
 * How to run tests
 * Deployment instructions
-
-### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
