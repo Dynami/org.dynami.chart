@@ -15,6 +15,7 @@
  */
 package org.dynami.chart;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -44,6 +45,7 @@ public class StackedChart extends Composite {
 	public static final int TICK_UNIT_FACTOR = 4;
 	public static final int TICK_PIXEL_SIZE = 4;
 	public static final int SPACE = 2;
+	private final boolean isTimeSeries;
 	private boolean forceFontToSubPlottable = false;
 	
 	private final String MAIN;
@@ -51,11 +53,39 @@ public class StackedChart extends Composite {
 	private final List<Chart> charts = new ArrayList<>();
 	private final CLongSet xValues = new CLongSet(SAMPLE_SIZE);
 	
+	private enum DateFormat {
+		$dd_MM_yy("dd/MM/yy"),
+		$dd_HH("dd-HH"),
+		$HH_mm("HH:mm"),
+		$mm_ss("mm:ss");
+		
+		private final SimpleDateFormat df;
+		DateFormat(String format){
+			df = new SimpleDateFormat(format);
+		}
+		
+		public static String proper(long t0, long t1){
+			if(t1 == 0) return $dd_MM_yy.format(t1);
+			else if( (t1-t0) <= 60*1000 ) return $mm_ss.format(t1);
+			else if( (t1-t0) <= 60*60*1000 ) return $HH_mm.format(t1);
+			else if( (t1-t0) <= 12*60*60*1000 ) return $dd_HH.format(t1);
+			else if( (t1-t0) <= 24*60*60*1000 ) return $dd_MM_yy.format(t1);
+			else return $dd_MM_yy.format(t1);
+		}
+		
+		public String format(long date){
+			return df.format(date);
+		}
+	}
+	
 	private final Axis xAxis = new Axis("x axis", false){
+		
 		public void paintControl(PaintEvent e) {
 			final int SIZE = xValues.size();
 			final int PLOTTABLE_UNITS = bounds.width/StackedChart.PIXELS_PER_UNIT;
-			final int LABEL_SIZE = e.gc.stringExtent(String.valueOf(xValues.last())).x;
+			final String LAST_LABEL = (isTimeSeries)?DateFormat.$dd_MM_yy.format(xValues.last()):xValues.last()+"";
+			
+			final int LABEL_SIZE = e.gc.stringExtent(LAST_LABEL).x;
 			for(int i = SIZE-1; i >= 0; i--){
 				final float factor = ((LABEL_SIZE+SPACE)/PIXELS_PER_UNIT)+1;
 				
@@ -64,8 +94,14 @@ public class StackedChart extends Composite {
 						PAD.LEFT.size+(i-SIZE+PLOTTABLE_UNITS)*StackedChart.PIXELS_PER_UNIT;
 				
 				if(i%factor == 0){
+					final String LABEL = (!isTimeSeries)?
+							String.valueOf(xValues.get(i)):
+							DateFormat.proper(
+									xValues.get((i-1)>=0?i-1:0),
+									xValues.get(i)
+									);
 					e.gc.drawString(
-							String.valueOf(xValues.get(i)),
+							LABEL,
 							x, 
 							bounds.y,
 							true);
@@ -79,8 +115,13 @@ public class StackedChart extends Composite {
 	};
 	
 	public StackedChart(Composite parent, int style, String mainChart) {
+		this(parent, style, mainChart, false);
+	}
+	
+	public StackedChart(Composite parent, int style, String mainChart, boolean isTimeSeries) {
 		super(parent, style | SWT.DOUBLE_BUFFERED);
 		setLayout(new FillLayout(SWT.VERTICAL));
+		this.isTimeSeries = isTimeSeries;
 		MAIN = mainChart;
 	    charts.add(new Chart(MAIN, 100));
 	     

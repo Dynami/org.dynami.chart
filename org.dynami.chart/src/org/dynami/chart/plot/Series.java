@@ -12,7 +12,6 @@ import org.eclipse.swt.widgets.Display;
 
 public abstract class Series extends Plottable implements ISeries {
 	protected final CSampleArray values = new CSampleArray(StackedChart.SAMPLE_SIZE);
-//	protected boolean useXset = false;
 	private final Last last;
 	private final String name;
 	private final Type type;
