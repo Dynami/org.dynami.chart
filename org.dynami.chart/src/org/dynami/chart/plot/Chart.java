@@ -79,7 +79,7 @@ public class Chart extends Plottable {
 		} else if(Type.Order.equals(type)){
 			s = new OrderSeries(name, type);
 		} 
-		assert s == null :"Not implemented type of series";
+		assert s != null :"Not implemented type of series";
 		seriesMap.put(name, s);
 		seriesList.add(s);
 		seriesList.sort((Series s1, Series o2)->{

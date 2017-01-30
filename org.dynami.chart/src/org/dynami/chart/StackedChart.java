@@ -189,6 +189,10 @@ public class StackedChart extends Composite {
 		}
 	}
 	
+	public void adjustRarge() {
+		getCharts().forEach(Chart::adjustRange);
+	}
+	
 	public void setFont(Font font, boolean forceFontToSubPlottable) {
 		super.setFont(font);
 		this.forceFontToSubPlottable = forceFontToSubPlottable;
