@@ -44,7 +44,7 @@ public class StackedChart extends Composite {
 	public static final int PIXELS_PER_UNIT = 8;
 	public static final int TICK_UNIT_FACTOR = 4;
 	public static final int TICK_PIXEL_SIZE = 4;
-	public static final int SPACE = 2;
+	public static final int SPACE = 4;
 	private final boolean isTimeSeries;
 	private boolean forceFontToSubPlottable = false;
 	
@@ -54,7 +54,7 @@ public class StackedChart extends Composite {
 	private final CLongSet xValues = new CLongSet(SAMPLE_SIZE);
 	
 	private enum DateFormat {
-		$dd_MM_yy("dd/MM/yy"),
+		$dd_MM("dd/MM"),
 		$dd_HH("dd-HH"),
 		$HH_mm("HH:mm"),
 		$mm_ss("mm:ss");
@@ -65,12 +65,12 @@ public class StackedChart extends Composite {
 		}
 		
 		public static String proper(long t0, long t1){
-			if(t1 == 0) return $dd_MM_yy.format(t1);
+			if(t1 == 0) return $dd_MM.format(t1);
 			else if( (t1-t0) <= 60*1000 ) return $mm_ss.format(t1);
 			else if( (t1-t0) <= 60*60*1000 ) return $HH_mm.format(t1);
 			else if( (t1-t0) <= 12*60*60*1000 ) return $dd_HH.format(t1);
-			else if( (t1-t0) <= 24*60*60*1000 ) return $dd_MM_yy.format(t1);
-			else return $dd_MM_yy.format(t1);
+			else if( (t1-t0) <= 24*60*60*1000 ) return $dd_MM.format(t1);
+			else return $dd_MM.format(t1);
 		}
 		
 		public String format(long date){
@@ -83,7 +83,7 @@ public class StackedChart extends Composite {
 		public void paintControl(PaintEvent e) {
 			final int SIZE = xValues.size();
 			final int PLOTTABLE_UNITS = bounds.width/StackedChart.PIXELS_PER_UNIT;
-			final String LAST_LABEL = (isTimeSeries)?DateFormat.$dd_MM_yy.format(xValues.last()):xValues.last()+"";
+			final String LAST_LABEL = (isTimeSeries)?DateFormat.$dd_MM.format(xValues.last()):xValues.last()+"";
 			
 			final int LABEL_SIZE = e.gc.stringExtent(LAST_LABEL).x;
 			for(int i = SIZE-1; i >= 0; i--){

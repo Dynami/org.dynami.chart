@@ -13,7 +13,7 @@ import org.eclipse.swt.widgets.Display;
 public class Last extends Plottable {
 	private final Color borderColor = Display.getDefault().getSystemColor(SWT.COLOR_BLACK);
 	private int DIM; // = StackedChart.PAD.RIGHT.val();
-	private final int[] lastLable = new int[10];
+	private final int[] lastLabel = new int[10];
 	private final int[] polygon = new int[10];
 	
 	private final Type type;
@@ -21,20 +21,20 @@ public class Last extends Plottable {
 	public Last(Type type) {
 		this.type = type;
 		DIM = getFont().getFontData()[0].getHeight()/2+StackedChart.SPACE;
-		lastLable[0] = 0;
-		lastLable[1] = DIM; 
+		lastLabel[0] = 0;
+		lastLabel[1] = DIM; 
 		
-		lastLable[2] = DIM;
-		lastLable[3] = 0; 
+		lastLabel[2] = DIM;
+		lastLabel[3] = 0; 
 		
-		lastLable[4] = StackedChart.PAD.RIGHT.val();
-		lastLable[5] = 0;
+		lastLabel[4] = StackedChart.PAD.RIGHT.val();
+		lastLabel[5] = 0;
 		
-		lastLable[6] = StackedChart.PAD.RIGHT.val();
-		lastLable[7] = 2*DIM; 
+		lastLabel[6] = StackedChart.PAD.RIGHT.val();
+		lastLabel[7] = 2*DIM; 
 		
-		lastLable[8] = DIM;
-		lastLable[9] = 2*DIM;
+		lastLabel[8] = DIM;
+		lastLabel[9] = 2*DIM;
 	}
 	
 	public void setYValue(double yValue){
@@ -63,20 +63,20 @@ public class Last extends Plottable {
 //			}
 			
 //			DIM = fontSize/2+StackedChart.SPACE;
-			polygon[0] = lastLable[0]+getBounds().x+getBounds().width;
-			polygon[1] = lastLable[1]+yAxis-DIM;
+			polygon[0] = lastLabel[0]+getBounds().x+getBounds().width;
+			polygon[1] = lastLabel[1]+yAxis-DIM;
 				
-			polygon[2] = lastLable[2]+getBounds().x+getBounds().width;
-			polygon[3] = lastLable[3]+yAxis-DIM;
+			polygon[2] = lastLabel[2]+getBounds().x+getBounds().width;
+			polygon[3] = lastLabel[3]+yAxis-DIM;
 				
-			polygon[4] = lastLable[4]+getBounds().x+getBounds().width;
-			polygon[5] = lastLable[5]+yAxis-DIM;
+			polygon[4] = lastLabel[4]+getBounds().x+getBounds().width;
+			polygon[5] = lastLabel[5]+yAxis-DIM;
 				
-			polygon[6] = lastLable[6]+getBounds().x+getBounds().width;
-			polygon[7] = lastLable[7]+yAxis-DIM;
+			polygon[6] = lastLabel[6]+getBounds().x+getBounds().width;
+			polygon[7] = lastLabel[7]+yAxis-DIM;
 				
-			polygon[8] = lastLable[8]+getBounds().x+getBounds().width;
-			polygon[9] = lastLable[9]+yAxis-DIM;
+			polygon[8] = lastLabel[8]+getBounds().x+getBounds().width;
+			polygon[9] = lastLabel[9]+yAxis-DIM;
 			
 			e.gc.setBackground( (Type.Line.equals(type))?getForeground():getBackground());
 			e.gc.fillPolygon(polygon);
@@ -85,8 +85,8 @@ public class Last extends Plottable {
 			e.gc.drawPolygon(polygon);
 			e.gc.drawText(
 					value,
-					lastLable[0]+getBounds().x+getBounds().width+DIM, 
-					lastLable[1]+yAxis-(DIM*2),
+					lastLabel[0]+getBounds().x+getBounds().width+DIM, 
+					lastLabel[1]+yAxis-(DIM*2),
 					true);
 		}
 	}
