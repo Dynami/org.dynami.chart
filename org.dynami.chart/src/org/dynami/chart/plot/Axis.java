@@ -27,6 +27,11 @@ public class Axis extends Plottable {
 						bounds.y+StackedChart.PIXELS_PER_UNIT*i, 
 						bounds.x+bounds.width+StackedChart.TICK_PIXEL_SIZE/2, 
 						bounds.y+StackedChart.PIXELS_PER_UNIT*i);
+				e.gc.drawText(
+						String.valueOf(StackedChart.PIXELS_PER_UNIT*i), 
+						bounds.x+bounds.width+StackedChart.TICK_PIXEL_SIZE/2, 
+						bounds.y+StackedChart.PIXELS_PER_UNIT*i,
+						true);
 			}
 		} else {
 			for(int i = 0; i < bounds.width/StackedChart.PIXELS_PER_UNIT; i++){
